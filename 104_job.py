@@ -1,32 +1,23 @@
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+import json
 
 headers ={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
           AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36'}
 
-url = 'https://www.104.com.tw/jobs/search/?keyword=%E5%A4%A7%E6%95%B8%E6%93%9A&order=1&jobsource=2018indexpoc&ro=0'
-# https://www.104.com.tw/jobs/search/?ro=0&kwop=7&keyword=%E5%A4%A7%E6%95%B8%E6%93%9A  &order=15&asc=0&page=5&mode=s&  jobsource=2018indexpoc
-res = requests.get(url, headers)
+url = 'https://www.104.com.tw/jobs/search/?'
+my_params = {'keyword': '大數據','order':'1','asc':'0','page':1,'mode':'s'}
+
+res = requests.get(url,params=my_params ,headers=headers)
 soup = BeautifulSoup(res.text, 'html.parser')
 
-test = soup.find('div', {"id":"js-job-content"}).find_all('article')
-i=0
+passw = soup.find('div', {"id":"js-job-content"}).find_all('a')[0]['href'].split('job/')[1].split('?')[0]
 
-'''
-print(test[i].find_all('a')[0].text)
-print(test[i].find_all('a')[1].text)
-print(test[i].find_all('p')[0].text)
-print(test[i].find_all('span',{"class":"b-tag--default"})[0].text)
-print(test[i].find_all('span',{"class":"b-tag--default"})[1].text)
-print(test[i].find_all('a')[1]['href'])
-print(test[i].find_all('a')[1]['title'])
-'''
-print('=====')
-print(test[i].find_all('a')[0].text)
-print(test[i].find_all('a')[0]['href'])
-print('=====')
-url2 = test[i].find_all('a')[0]['href']
-res2 = requests.get('https:'+url2, headers)
-soup2 = BeautifulSoup(res2.text, 'html.parser')
-print(soup2)
-#print(test[i])
+i=0
+headers.update({'Referer':'https://www.104.com.tw/job/{}?jobsource=jolist_a_relevance'.format(passw)})
+url2 = 'https://www.104.com.tw/job/ajax/content/{}'.format(passw)
+resp=requests.get(url2,headers=headers)
+
+jdata=json.loads(resp.text)
+print(jdata)
