@@ -15,7 +15,7 @@ res = requests.get(url,params=my_params ,headers=headers)
 soup = BeautifulSoup(res.text, 'html.parser')
 job_content = soup.find('div', {"id":"js-job-content"})
 
-i = 0
+i = 0 # for i in ranges(len(job_content.find_all('a'))-1):
 passw = job_content.find_all('a')[i]['href'][21:26]
 headers.update({'Referer':'https://www.104.com.tw/job/' + passw + '?jobsource=jolist_a_relevance'})
 url2 = 'https://www.104.com.tw/job/ajax/content/' + passw
