@@ -13,10 +13,10 @@ my_params = {'keyword': '大數據',\
 
 res = requests.get(url,params=my_params ,headers=headers)
 soup = BeautifulSoup(res.text, 'html.parser')
+job_content = soup.find('div', {"id":"js-job-content"})
 
 i = 0
-passw = soup.find('div', {"id":"js-job-content"}).find_all('a')[i]['href'][21:26]
-
+passw = job_content.find_all('a')[i]['href'][21:26]
 headers.update({'Referer':'https://www.104.com.tw/job/' + passw + '?jobsource=jolist_a_relevance'})
 url2 = 'https://www.104.com.tw/job/ajax/content/' + passw
 res2 = requests.get(url2,headers=headers)
@@ -30,3 +30,7 @@ salaryMin = jdata['data']['jobDetail']['salaryMin']
 salaryMax = jdata['data']['jobDetail']['salaryMax']
 industry = jdata['data']['industry']
 hrName = jdata['data']['contact']['hrName']
+
+#with open(jobName, 'w') as f:
+#    json.dump(json_file, f)
+jdata['data']['contact']['hrName']
