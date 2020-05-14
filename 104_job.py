@@ -10,15 +10,15 @@ columns = ['jobName','comName','appearDate','salary','salaryMin','salaryMax','in
 data=[]
 jdata=[]
 url = 'https://www.104.com.tw/jobs/search/?'
+my_params = {'keyword': '大數據',\
+            'order':'15','asc':'0','mode':'s'}
 
-for page in range(2):
-    my_params = {'keyword': '大數據',\
-                 'order':'15','asc':'0','page':page+1,'mode':'s'}
-    res = requests.get(url,params=my_params ,headers=headers)
+for page in range(2):  # set total download pages
+    res = requests.get(url,params=my_params.update({'page':page+1}) ,headers=headers)
     soup = BeautifulSoup(res.text, 'html.parser')
     job_content = soup.find('div', {"id":"js-job-content"})
 
-    for i in range(15):
+    for i in range(15):  # there are 15 job items in 1 page
         urlp = job_content.find_all('article')[i].find('a')['href']
         headers.update({'Referer':'https://www.104.com.tw/job/' + urlp[21:26] + urlp[36:]})
         url2 = 'https://www.104.com.tw/job/ajax/content/' + urlp[21:26]
@@ -36,8 +36,8 @@ for page in range(2):
         data.append(content_data)
         print(content_data)
 
-df = pd.DataFrame(data=data, columns=columns)
-df.to_csv('./104_work.csv', index=0, encoding='utf-8-sig')
+df = pd.DataFrame(data = data, columns = columns)
+df.to_csv('./104_work.csv', index = 0, encoding = 'utf-8-sig')
 
 # Thanks for jimmyyang886 -- https://github.com/jimmyyang886/Club-TEB101-homework104/blob/master/hw_job104_json2pandas.ipynb
 #            Yuting(Tiffany)       
