@@ -36,8 +36,8 @@ for page in range(2):
         data.append(content_data)
         print(content_data)
 
-df = pd.DataFrame(data = data, columns = columns)
-df.to_csv('./104_work.csv', index = 0, encoding = 'utf-8-sig')
+df = pd.DataFrame(data=data, columns=columns)
+df.to_csv('./104_work.csv', index=0, encoding='utf-8-sig')
 
 # Thanks for jimmyyang886 -- https://github.com/jimmyyang886/Club-TEB101-homework104/blob/master/hw_job104_json2pandas.ipynb
 #            Yuting(Tiffany)       
