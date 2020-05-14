@@ -7,11 +7,10 @@ headers ={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
           AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36'}
 
 columns = ['jobName','comName','appearDate','salary','salaryMin','salaryMax','industry','hrName']
-data = []
-content_data=[]
+data=[]
 jdata=[]
 
-for page in range(1):
+for page in range(2):
     url = 'https://www.104.com.tw/jobs/search/?'
     my_params = {'keyword': '大數據',\
                  'order':'15','asc':'0','page':page+1,'mode':'s'}
@@ -20,32 +19,24 @@ for page in range(1):
     soup = BeautifulSoup(res.text, 'html.parser')
     job_content = soup.find('div', {"id":"js-job-content"})
 
-    #i = 0 # 
-    for i in range(2):
-    
-        passw = job_content.find_all('div',{'class':'b-block__left'})[i].find('a')['href'][21:26]
-        headers.update({'Referer':'https://www.104.com.tw/job/' + passw + '?jobsource=jolist_a_relevance'})
-        print(headers)
+    for i in range(15):
+        urlp=job_content.find_all('article')[i].find('a')['href']
+        passw = urlp[21:26]
+        headers.update({'Referer':'https://www.104.com.tw/job/' + passw + urlp[36:]})
         url2 = 'https://www.104.com.tw/job/ajax/content/' + passw
-        print(url2)
-        res2 = requests.get(url2,headers=headers)
-        jdata = json.loads(res2.text)
+        jdata = json.loads(requests.get(url2,headers=headers).text)['data']
+        #print(jdata)
+        content_data=[jdata['header']['jobName'].replace('"', '_'),\
+                      jdata['header']['custName'],\
+                      jdata['header']['appearDate'],\
+                      jdata['jobDetail']['salary'],\
+                      jdata['jobDetail']['salaryMin'],\
+                      jdata['jobDetail']['salaryMax'],\
+                      jdata['industry'],\
+                      jdata['contact']['hrName']]
 
-        content_data.append(jdata['data']['header']['jobName'].replace('"', '_'))
-        content_data.append(jdata['data']['header']['custName'])
-        content_data.append(jdata['data']['header']['appearDate'])
-        content_data.append(jdata['data']['jobDetail']['salary'])
-        content_data.append(jdata['data']['jobDetail']['salaryMin'])
-        content_data.append(jdata['data']['jobDetail']['salaryMax'])
-        content_data.append(jdata['data']['industry'])
-        content_data.append(jdata['data']['contact']['hrName'])
-
-        #data.append(content_data)
+        data.append(content_data)
         print(content_data)
-
-
 
 df = pd.DataFrame(data = data, columns = columns)
 df.to_csv('./104_work.csv', index = 0, encoding = 'utf-8-sig')
-
-# thanks for Walali -- https://github.com/Walilei/Homeworks/blob/master/web%20crawler%20-%20104.py
