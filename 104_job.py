@@ -10,7 +10,7 @@ columns = ['jobName','comName','appearDate','salary','salaryMin','salaryMax','in
 data=[]
 jdata=[]
 url = 'https://www.104.com.tw/jobs/search/?'
-my_params = {'keyword': '大數據',\
+my_params = {'keyword': '大數據',\  # set the search keyword
             'order':'15','asc':'0','mode':'s'}
 
 for page in range(2):  # set total download pages
