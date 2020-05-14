@@ -3,13 +3,13 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
+url = 'https://www.104.com.tw/jobs/search/?'
+my_params = {'keyword': '大數據',\
+            'order':'15','asc':'0','mode':'s'} # set the search keyword
 headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
           AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36'}
 
 columns = ['jobName','comName','appearDate','salary','salaryMin','salaryMax','industry','hrName']
-url = 'https://www.104.com.tw/jobs/search/?'
-my_params = {'keyword': '大數據',\
-            'order':'15','asc':'0','mode':'s'} # set the search keyword
 
 for page in range(2):  # set total download pages
     res = requests.get(url,params=my_params.update({'page':page+1}) ,headers=headers)
