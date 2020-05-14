@@ -9,12 +9,11 @@ headers ={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
 columns = ['jobName','comName','appearDate','salary','salaryMin','salaryMax','industry','hrName']
 data=[]
 jdata=[]
+url = 'https://www.104.com.tw/jobs/search/?'
 
 for page in range(2):
-    url = 'https://www.104.com.tw/jobs/search/?'
     my_params = {'keyword': '大數據',\
                  'order':'15','asc':'0','page':page+1,'mode':'s'}
-
     res = requests.get(url,params=my_params ,headers=headers)
     soup = BeautifulSoup(res.text, 'html.parser')
     job_content = soup.find('div', {"id":"js-job-content"})
@@ -40,3 +39,7 @@ for page in range(2):
 
 df = pd.DataFrame(data = data, columns = columns)
 df.to_csv('./104_work.csv', index = 0, encoding = 'utf-8-sig')
+
+# Thanks for jimmyyang886 -- https://github.com/jimmyyang886/Club-TEB101-homework104/blob/master/hw_job104_json2pandas.ipynb
+#            Yuting(Tiffany)       
+#            Walilei -- https://github.com/Walilei/Homeworks/blob/master/web%20crawler%20-%20104.py
