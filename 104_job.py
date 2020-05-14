@@ -20,9 +20,8 @@ for page in range(2):
 
     for i in range(15):
         urlp = job_content.find_all('article')[i].find('a')['href']
-        passw = urlp[21:26]
-        headers.update({'Referer':'https://www.104.com.tw/job/' + passw + urlp[36:]})
-        url2 = 'https://www.104.com.tw/job/ajax/content/' + passw
+        headers.update({'Referer':'https://www.104.com.tw/job/' + urlp[21:26] + urlp[36:]})
+        url2 = 'https://www.104.com.tw/job/ajax/content/' + urlp[21:26]
         jdata = json.loads(requests.get(url2,headers=headers).text)['data']
         #print(jdata)
         content_data=[jdata['header']['jobName'].replace('"', '_'),\
