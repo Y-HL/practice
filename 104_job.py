@@ -16,7 +16,7 @@ for page in range(2):  # set total download pages
     soup = BeautifulSoup(res.text, 'html.parser')
     job_content = soup.find('div', {"id":"js-job-content"})
 
-    for i in range(15):  # there are 15 items of job in 1 page
+    for i in range(15):  # there are 15 items in 1 page
         urlp = job_content.find_all('article')[i].find('a')['href']
         url2 = 'https://www.104.com.tw/job/ajax/content/' + urlp[21:26]
         headers.update({'Referer':'https://www.104.com.tw/job/' + urlp[21:26] + urlp[36:]})       
