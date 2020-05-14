@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-headers ={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
+headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
           AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36'}
 
 columns = ['jobName','comName','appearDate','salary','salaryMin','salaryMax','industry','hrName']
@@ -19,7 +19,7 @@ for page in range(2):
     job_content = soup.find('div', {"id":"js-job-content"})
 
     for i in range(15):
-        urlp=job_content.find_all('article')[i].find('a')['href']
+        urlp = job_content.find_all('article')[i].find('a')['href']
         passw = urlp[21:26]
         headers.update({'Referer':'https://www.104.com.tw/job/' + passw + urlp[36:]})
         url2 = 'https://www.104.com.tw/job/ajax/content/' + passw
