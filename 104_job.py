@@ -6,9 +6,10 @@ import json
 headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
           AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36'}
 
-columns = ['jobName','comName','appearDate','salary','salaryMin','salaryMax','industry','hrName']
+columns = ['jobName','comName','appearDate','salary','salaryMin','salaryMax','industry','hrName','email','phone','url']
 
-for page in range(2):  # set total download pages
+data=[]
+for page in range(10):  # set total download pages
     url='https://www.104.com.tw/jobs/search/?keyword=大數據\
     &order=15&page={page}&mode=s' # set the search keyword
     res = requests.get(url,headers=headers)
@@ -28,7 +29,9 @@ for page in range(2):  # set total download pages
                       jdata['jobDetail']['salaryMin'],\
                       jdata['jobDetail']['salaryMax'],\
                       jdata['industry'],\
-                      jdata['contact']['hrName']]
+                      jdata['contact']['hrName'],\
+                      jdata['contact']['email'],\
+                      jdata['contact']['phone'],urlp]
 
         data.append(content_data)
         print(content_data)
